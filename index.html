@@ -1,12 +1,767 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYMJIN</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0a09" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="YYMJIN Industrial Design Portfolio — 产品设计、CMF、结构表达与场景叙事。" />
+  <meta property="og:title" content="YYMJIN — Industrial Design Portfolio" />
+  <meta property="og:description" content="Industrial Design / Product / CMF / Experience" />
+  <meta property="og:image" content="09.png" />
+  <title>YYMJIN — Industrial Design Portfolio</title>
+
+  <style>
+    :root{
+      --bg:#0b0a09;
+      --bg-soft:#11100e;
+      --paper:#eee8dc;
+      --ink:#f4efe6;
+      --muted:#a9a196;
+      --muted-2:#756f67;
+      --line:rgba(255,255,255,.13);
+      --line-soft:rgba(255,255,255,.075);
+      --warm:#c8925c;
+      --warm-2:#8f6542;
+      --max:1560px;
+      --ease:cubic-bezier(.22,1,.36,1);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+    }
+    body.lock{overflow:hidden}
+    ::selection{background:#d6b086;color:#111}
+    img{display:block;width:100%;height:auto}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+
+    .grain{
+      position:fixed;inset:0;pointer-events:none;z-index:9997;opacity:.055;mix-blend-mode:soft-light;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    }
+    .progress{
+      position:fixed;left:0;top:0;height:2px;width:0;background:linear-gradient(90deg,var(--warm),#e9c9a8);
+      z-index:10001;box-shadow:0 0 18px rgba(200,146,92,.45)
+    }
+
+    .preloader{
+      position:fixed;inset:0;background:#080706;z-index:10000;display:grid;place-items:center;
+      transition:opacity .8s var(--ease),visibility .8s var(--ease)
+    }
+    .preloader.out{opacity:0;visibility:hidden}
+    .preloader-inner{text-align:center}
+    .preloader-mark{
+      font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,7vw,84px);letter-spacing:.26em;
+      margin-left:.26em;color:#f1eadf
+    }
+    .preloader-line{width:160px;height:1px;background:rgba(255,255,255,.16);margin:22px auto 0;overflow:hidden}
+    .preloader-line:after{
+      content:"";display:block;height:100%;width:45%;background:var(--warm);animation:load 1.2s var(--ease) infinite
+    }
+    @keyframes load{0%{transform:translateX(-130%)}100%{transform:translateX(300%)}}
+
+    .shell{width:min(var(--max),calc(100% - 64px));margin:auto}
+    .kicker{
+      font-size:11px;letter-spacing:.19em;text-transform:uppercase;color:var(--warm);font-weight:600
+    }
+    .display{
+      font-family:Georgia,"Times New Roman","Songti SC","STSong",serif;
+      font-weight:400;letter-spacing:-.04em;line-height:.95
+    }
+    .hairline{height:1px;background:var(--line)}
+    .muted{color:var(--muted)}
+
+    /* NAV */
+    .nav{
+      position:fixed;left:0;right:0;top:0;z-index:90;
+      transition:transform .5s var(--ease),background .4s ease,border-color .4s ease;
+      border-bottom:1px solid transparent
+    }
+    .nav.scrolled{
+      background:rgba(10,9,8,.72);backdrop-filter:blur(18px) saturate(120%);
+      -webkit-backdrop-filter:blur(18px) saturate(120%);border-bottom-color:var(--line-soft)
+    }
+    .nav.hidden{transform:translateY(-100%)}
+    .nav-in{
+      height:82px;width:min(var(--max),calc(100% - 64px));margin:auto;
+      display:flex;align-items:center;justify-content:space-between;gap:28px
+    }
+    .brand{display:flex;align-items:baseline;gap:12px;white-space:nowrap}
+    .brand b{font-size:16px;letter-spacing:.2em}
+    .brand span{font-size:9px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+    .nav-links{display:flex;align-items:center;gap:28px}
+    .nav-links a{
+      font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#d6d0c7;position:relative;padding:8px 0
+    }
+    .nav-links a:after{
+      content:"";position:absolute;left:0;right:100%;bottom:1px;height:1px;background:var(--warm);transition:right .35s var(--ease)
+    }
+    .nav-links a:hover:after{right:0}
+    .menu-btn{display:none;background:none;border:0;color:var(--ink);padding:8px;cursor:pointer}
+
+    /* HERO */
+    .hero{position:relative;height:100svh;min-height:720px;overflow:hidden;background:#090807}
+    .hero-media{position:absolute;inset:0}
+    .hero-media img{
+      width:100%;height:100%;object-fit:cover;object-position:center 58%;
+      transform:scale(1.045);animation:heroIn 2.2s var(--ease) .1s both
+    }
+    @keyframes heroIn{from{transform:scale(1.12);filter:brightness(.72)}to{transform:scale(1.045);filter:brightness(1)}}
+    .hero-overlay{
+      position:absolute;inset:0;
+      background:
+        linear-gradient(90deg,rgba(5,4,4,.86) 0%,rgba(5,4,4,.56) 33%,rgba(5,4,4,.12) 65%,rgba(5,4,4,.22) 100%),
+        linear-gradient(0deg,rgba(5,4,4,.74) 0%,transparent 33%);
+    }
+    .hero-content{
+      position:relative;z-index:3;height:100%;display:flex;align-items:flex-end;
+      padding:0 0 8.5vh
+    }
+    .hero-copy{max-width:920px}
+    .hero-copy .kicker{margin-bottom:24px;color:#d6ad84}
+    .hero h1{
+      margin:0;font-size:clamp(58px,8vw,138px);max-width:980px;
+      text-shadow:0 5px 40px rgba(0,0,0,.25)
+    }
+    .hero-cn{
+      margin:27px 0 0;font-family:"Songti SC","STSong","SimSun",serif;
+      font-size:clamp(18px,2vw,29px);letter-spacing:.15em;color:#eee5d8
+    }
+    .hero-meta{
+      margin-top:38px;display:flex;flex-wrap:wrap;gap:14px 32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.22);
+      width:min(650px,100%)
+    }
+    .hero-meta span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c8c0b5}
+    .scroll-ind{
+      position:absolute;z-index:4;right:32px;bottom:35px;display:flex;align-items:center;gap:12px;
+      color:#b7afa3;font-size:9px;letter-spacing:.2em;text-transform:uppercase;transform:rotate(90deg);transform-origin:right bottom
+    }
+    .scroll-ind i{display:block;width:48px;height:1px;background:rgba(255,255,255,.45);position:relative;overflow:hidden}
+    .scroll-ind i:after{content:"";position:absolute;inset:0;background:var(--warm);animation:scrollLine 1.8s ease infinite}
+    @keyframes scrollLine{0%{transform:translateX(-100%)}70%,100%{transform:translateX(100%)}}
+
+    /* MANIFESTO */
+    .manifesto{padding:150px 0 120px}
+    .manifesto-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:8vw;align-items:start}
+    .manifesto h2{
+      margin:0;font-size:clamp(48px,6.8vw,112px);max-width:1020px
+    }
+    .manifesto .desc{
+      max-width:780px;margin:48px 0 0 18%;font-size:clamp(17px,1.45vw,24px);line-height:1.72;color:#bbb3a8
+    }
+
+    /* FEATURE FULL */
+    .full-bleed{width:100%;position:relative;overflow:hidden}
+    .full-bleed img{width:100%;height:min(88vw,980px);object-fit:cover}
+    .image-caption{
+      position:absolute;left:32px;bottom:26px;display:flex;align-items:center;gap:18px;
+      padding:12px 16px;background:rgba(10,9,8,.45);backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.12);font-size:10px;letter-spacing:.14em;text-transform:uppercase
+    }
+
+    /* PROJECT OVERVIEW */
+    .project-head{padding:130px 0 80px}
+    .project-title-row{
+      display:grid;grid-template-columns:1.25fr .75fr;gap:7vw;align-items:end
+    }
+    .project-title-row h2{font-size:clamp(56px,7vw,118px);margin:10px 0 0}
+    .project-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 30px}
+    .info dt{
+      font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);margin-bottom:7px
+    }
+    .info dd{margin:0;font-size:13px;color:#d3cdc4;line-height:1.55}
+    .project-intro{
+      margin-top:70px;display:grid;grid-template-columns:.75fr 1.25fr;gap:8vw;border-top:1px solid var(--line);padding-top:34px
+    }
+    .project-intro p{
+      margin:0;color:#bbb3a7;font-size:clamp(18px,1.7vw,27px);line-height:1.72;max-width:900px
+    }
+
+    /* EDITORIAL IMAGES */
+    .editorial{padding:0 0 140px}
+    .editorial-grid{
+      display:grid;grid-template-columns:1.06fr .94fr;gap:28px;align-items:start
+    }
+    .frame{overflow:hidden;background:#111}
+    .frame img{transition:transform 1.1s var(--ease)}
+    .frame:hover img{transform:scale(1.018)}
+    .frame.portrait img{aspect-ratio:4/5;object-fit:cover}
+    .frame.square img{aspect-ratio:1/1;object-fit:cover}
+    .frame.landscape img{aspect-ratio:4/3;object-fit:cover}
+    .frame-label{
+      margin-top:14px;display:flex;justify-content:space-between;gap:20px;
+      font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#8d877e
+    }
+    .editorial-side{padding-top:130px}
+    .editorial-copy{max-width:470px;margin-bottom:44px}
+    .editorial-copy h3{
+      font-family:Georgia,"Times New Roman","Songti SC",serif;font-weight:400;font-size:clamp(32px,3.2vw,55px);line-height:1.08;margin:10px 0 20px
+    }
+    .editorial-copy p{font-size:14px;line-height:1.85;color:#989188;margin:0}
+
+    /* FORM */
+    .form-section{
+      padding:140px 0;background:var(--paper);color:#17130f
+    }
+    .form-section .kicker{color:#8a6545}
+    .form-grid{display:grid;grid-template-columns:.78fr 1.22fr;gap:7vw;align-items:center}
+    .form-copy h2{font-size:clamp(48px,6vw,92px);margin:12px 0 28px}
+    .form-copy p{font-size:16px;line-height:1.85;color:#5d554c;max-width:560px}
+    .form-points{margin-top:38px;border-top:1px solid rgba(23,19,15,.18)}
+    .form-point{
+      display:grid;grid-template-columns:62px 1fr;gap:18px;padding:19px 0;border-bottom:1px solid rgba(23,19,15,.14)
+    }
+    .form-point b{font-family:Georgia,serif;color:#9c6e48;font-size:15px}
+    .form-point span{font-size:13px;color:#4d463e}
+    .form-image img{aspect-ratio:4/5;object-fit:cover;box-shadow:0 25px 80px rgba(41,30,20,.12)}
+
+    /* STORY GALLERY */
+    .story{padding:150px 0}
+    .story-head{
+      display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:64px
+    }
+    .story-head h2{font-size:clamp(48px,6vw,92px);margin:10px 0 0}
+    .story-head p{max-width:460px;color:#8f887f;font-size:14px;line-height:1.8}
+    .triptych{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .triptych .frame:nth-child(2){transform:translateY(70px)}
+    .triptych img{aspect-ratio:4/5;object-fit:cover}
+    .triptych-foot{
+      margin-top:120px;padding-top:24px;border-top:1px solid var(--line);
+      display:flex;justify-content:space-between;gap:30px;color:#8e877d;font-size:10px;letter-spacing:.12em;text-transform:uppercase
+    }
+
+    /* STRUCTURE */
+    .structure{padding:150px 0;background:#eeeadf;color:#181410}
+    .structure-head{
+      display:grid;grid-template-columns:.82fr 1.18fr;gap:7vw;margin-bottom:65px;align-items:end
+    }
+    .structure-head h2{font-size:clamp(48px,6vw,92px);margin:10px 0 0}
+    .structure-head p{margin:0;font-size:16px;line-height:1.9;color:#5b554c;max-width:720px}
+    .structure-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .structure-card{background:#f5f1e8;overflow:hidden}
+    .structure-card img{width:100%;height:100%;object-fit:cover}
+    .structure-card:first-child img{aspect-ratio:1/1}
+    .structure-card:last-child img{aspect-ratio:1.39/1}
+    .structure-note{
+      margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+      border-top:1px solid rgba(24,20,16,.16);padding-top:22px
+    }
+    .structure-note div b{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8d6546;margin-bottom:8px}
+    .structure-note div span{font-size:12px;color:#5b544b;line-height:1.6}
+
+    /* BOARD */
+    .board-section{padding:150px 0}
+    .board-top{
+      display:grid;grid-template-columns:.7fr 1.3fr;gap:6vw;align-items:end;margin-bottom:54px
+    }
+    .board-top h2{font-size:clamp(48px,6vw,94px);margin:10px 0 0}
+    .board-top p{font-size:15px;line-height:1.85;color:#8f887f;max-width:720px}
+    .board-img{
+      overflow:hidden;background:#e9e3d8;cursor:zoom-in
+    }
+    .board-img img{aspect-ratio:1/1;object-fit:cover;transition:transform 1s var(--ease)}
+    .board-img:hover img{transform:scale(1.01)}
+
+    /* CINEMATIC */
+    .cinematic{height:100svh;min-height:720px;position:relative;overflow:hidden}
+    .cinematic img{width:100%;height:100%;object-fit:cover}
+    .cinematic-overlay{
+      position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,4,4,.8),rgba(5,4,4,.15) 58%,rgba(5,4,4,.25))
+    }
+    .cinematic-copy{
+      position:absolute;left:max(32px,calc((100vw - var(--max))/2 + 32px));bottom:9vh;z-index:2;max-width:760px
+    }
+    .cinematic-copy h2{font-size:clamp(50px,6.5vw,106px);margin:14px 0 22px}
+    .cinematic-copy p{max-width:620px;font-size:16px;line-height:1.85;color:#d2cbc1}
+
+    /* ABOUT */
+    .about{padding:150px 0}
+    .about-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:9vw}
+    .about h2{font-size:clamp(50px,6vw,98px);margin:10px 0 0}
+    .about-copy{padding-top:90px}
+    .about-copy .lead{
+      font-family:Georgia,"Times New Roman","Songti SC",serif;font-size:clamp(26px,3vw,47px);
+      line-height:1.28;color:#eee7dc;margin:0 0 38px
+    }
+    .about-copy p{font-size:15px;line-height:1.95;color:#918a81;max-width:760px}
+    .skills{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:0 28px;margin-top:50px;border-top:1px solid var(--line)
+    }
+    .skill{padding:18px 0;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#b5aea4}
+
+    /* FOOTER */
+    .footer{border-top:1px solid var(--line);padding:90px 0 34px}
+    .footer-big{
+      display:flex;justify-content:space-between;align-items:end;gap:40px;padding-bottom:74px
+    }
+    .footer-big h2{font-size:clamp(58px,8vw,132px);margin:10px 0 0}
+    .footer-cta{
+      width:190px;height:190px;border-radius:50%;border:1px solid rgba(255,255,255,.22);
+      display:grid;place-items:center;text-align:center;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+      transition:.45s var(--ease)
+    }
+    .footer-cta:hover{background:var(--warm);color:#14100c;border-color:var(--warm);transform:rotate(-5deg) scale(1.04)}
+    .footer-bottom{
+      display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:#6f6962;font-size:9px;letter-spacing:.14em;text-transform:uppercase
+    }
+
+    /* REVEAL */
+    [data-reveal]{
+      opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease)
+    }
+    [data-reveal].is-in{opacity:1;transform:none}
+    [data-reveal="clip"]{opacity:1;transform:none;clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease)}
+    [data-reveal="clip"].is-in{clip-path:inset(0 0 0 0)}
+
+    /* LIGHTBOX */
+    .lightbox{
+      position:fixed;inset:0;background:rgba(6,5,4,.95);z-index:9998;display:grid;place-items:center;
+      opacity:0;visibility:hidden;transition:.35s ease;padding:26px;cursor:zoom-out
+    }
+    .lightbox.open{opacity:1;visibility:visible}
+    .lightbox img{max-width:95vw;max-height:91vh;width:auto;height:auto;box-shadow:0 30px 120px rgba(0,0,0,.45)}
+    .lightbox-close{
+      position:absolute;right:26px;top:22px;background:none;border:0;color:#eee;font-size:28px;cursor:pointer
+    }
+
+    /* MOBILE */
+    @media (max-width:980px){
+      .shell,.nav-in{width:min(var(--max),calc(100% - 36px))}
+      .nav-links{display:none}
+      .menu-btn{display:block}
+      .hero{min-height:680px}
+      .hero-overlay{
+        background:linear-gradient(0deg,rgba(5,4,4,.88) 0%,rgba(5,4,4,.26) 62%,rgba(5,4,4,.24))
+      }
+      .hero-content{padding-bottom:72px}
+      .scroll-ind{display:none}
+      .manifesto{padding:105px 0 90px}
+      .manifesto-grid,.project-title-row,.project-intro,.form-grid,.structure-head,.board-top,.about-grid{
+        grid-template-columns:1fr;gap:38px
+      }
+      .manifesto .desc{margin-left:0;margin-top:18px}
+      .project-head{padding:100px 0 65px}
+      .project-intro{margin-top:45px}
+      .editorial{padding-bottom:100px}
+      .editorial-grid{grid-template-columns:1fr;gap:50px}
+      .editorial-side{padding-top:0}
+      .form-section,.story,.structure,.board-section,.about{padding:105px 0}
+      .triptych{grid-template-columns:1fr;gap:16px}
+      .triptych .frame:nth-child(2){transform:none}
+      .triptych img{aspect-ratio:4/5}
+      .triptych-foot{margin-top:36px}
+      .structure-grid{grid-template-columns:1fr}
+      .structure-note{grid-template-columns:1fr 1fr}
+      .about-copy{padding-top:0}
+      .footer-big{align-items:flex-start;flex-direction:column}
+      .footer-cta{width:145px;height:145px}
+    }
+
+    @media (max-width:620px){
+      .nav-in{height:68px}
+      .brand span{display:none}
+      .hero h1{font-size:clamp(52px,16vw,88px)}
+      .hero-cn{font-size:17px}
+      .hero-meta{gap:10px 18px}
+      .project-info{grid-template-columns:1fr}
+      .story-head{align-items:flex-start;flex-direction:column}
+      .structure-note{grid-template-columns:1fr}
+      .skills{grid-template-columns:1fr}
+      .image-caption{left:16px;bottom:16px}
+      .cinematic-copy{left:18px;right:18px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+      [data-reveal],[data-reveal="clip"]{opacity:1!important;transform:none!important;clip-path:none!important}
+    }
+  </style>
 </head>
-<body>
-    <h1>YYMJIN.COM</h1>
-    <p>我的网站已经成功上线。</p >
+
+<body class="lock">
+  <div class="progress" id="progress"></div>
+  <div class="grain"></div>
+
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader-inner">
+      <div class="preloader-mark">YYMJIN</div>
+      <div class="preloader-line"></div>
+    </div>
+  </div>
+
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <a href="#top" class="brand" aria-label="YYMJIN Home">
+        <b>YYMJIN</b><span>Industrial Design Portfolio</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#project">Project</a>
+        <a href="#form">Form & CMF</a>
+        <a href="#structure">Structure</a>
+        <a href="#process">Process</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="menu-btn" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-media">
+        <img src="09.png" alt="辽瓷香氛产品在东方室内空间中的场景渲染">
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="shell hero-content">
+        <div class="hero-copy">
+          <div class="kicker">Industrial Design Portfolio · 2026</div>
+          <h1 class="display">Design for<br>a Better Life.</h1>
+          <div class="hero-cn">设计 · 连接 · 美好生活</div>
+          <div class="hero-meta">
+            <span>Product Design</span>
+            <span>CMF</span>
+            <span>Visual Narrative</span>
+            <span>Experience</span>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-ind"><span>Scroll to explore</span><i></i></div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="manifesto">
+      <div class="shell manifesto-grid">
+        <div data-reveal>
+          <div class="kicker">Design Philosophy</div>
+        </div>
+        <div>
+          <h2 class="display" data-reveal>Function is the beginning.<br>Emotion makes it memorable.</h2>
+          <p class="desc" data-reveal>
+            我关注产品形态、材质、结构与情绪之间的关系。设计不止解决功能，
+            更需要建立人与物之间可以被感知、被记住的体验。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CINEMATIC OPEN -->
+    <section class="full-bleed" data-reveal="clip">
+      <img src="10.png" alt="辽瓷香氛在书桌空间中的场景渲染" loading="lazy">
+      <div class="image-caption">
+        <span>01</span><span>Atmosphere / Context / Emotion</span>
+      </div>
+    </section>
+
+    <!-- PROJECT -->
+    <section class="project-head" id="project">
+      <div class="shell">
+        <div class="project-title-row">
+          <div data-reveal>
+            <div class="kicker">Featured Project · 01</div>
+            <h2 class="display">辽瓷 · 香氛</h2>
+          </div>
+          <dl class="project-info" data-reveal>
+            <div class="info"><dt>Category</dt><dd>Home Product / Aroma Diffuser</dd></div>
+            <div class="info"><dt>Focus</dt><dd>Form · CMF · Experience</dd></div>
+            <div class="info"><dt>Design Language</dt><dd>Oriental · Warm · Quiet</dd></div>
+            <div class="info"><dt>Year</dt><dd>2026</dd></div>
+          </dl>
+        </div>
+
+        <div class="project-intro">
+          <div class="kicker" data-reveal>Project Statement</div>
+          <p data-reveal>
+            项目从辽代瓷器的器型比例与东方器物气质中提取设计语言，
+            将收分轮廓、镂空金属网格、温润木质与香氛功能重新组合。
+            目标不是复刻传统，而是在现代家居语境中创造一种安静、克制、具有文化识别度的生活器物。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDITORIAL -->
+    <section class="editorial">
+      <div class="shell editorial-grid">
+        <div>
+          <figure class="frame portrait" data-reveal="clip">
+            <img src="02.png" alt="辽瓷香氛日间陈设场景" loading="lazy">
+          </figure>
+          <div class="frame-label"><span>Scene / 01</span><span>Calm Daylight</span></div>
+        </div>
+
+        <div class="editorial-side">
+          <div class="editorial-copy" data-reveal>
+            <div class="kicker">A Quiet Presence</div>
+            <h3>像器物一样存在，<br>而不是像设备一样出现。</h3>
+            <p>
+              通过克制的体量关系和温和的材质组合，让产品自然进入住宅、阅读与休憩场景。
+              香气、光影与器物共同构成空间氛围。
+            </p>
+          </div>
+
+          <figure class="frame portrait" data-reveal="clip">
+            <img src="03.png" alt="辽瓷香氛休憩场景" loading="lazy">
+          </figure>
+          <div class="frame-label"><span>Scene / 02</span><span>Lifestyle Context</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORM -->
+    <section class="form-section" id="form">
+      <div class="shell form-grid">
+        <div class="form-copy" data-reveal>
+          <div class="kicker">Form & CMF</div>
+          <h2 class="display">Shape the<br>silence.</h2>
+          <p>
+            造型以纵向比例和中段收束建立识别度；金属镂空网格让光线获得层次，
+            木质上盖缓和金属的冷感。不同材质之间并非装饰性的叠加，而是在视觉与触觉上形成节奏。
+          </p>
+
+          <div class="form-points">
+            <div class="form-point"><b>01</b><span>收腰式纵向轮廓，建立轻盈、克制的视觉姿态。</span></div>
+            <div class="form-point"><b>02</b><span>木质 × 金属 × 暖光，形成冷暖材质对比。</span></div>
+            <div class="form-point"><b>03</b><span>镂空结构让光影参与产品表达，使功能成为视觉体验。</span></div>
+          </div>
+        </div>
+
+        <figure class="form-image" data-reveal="clip">
+          <img src="04.png" alt="辽瓷香氛产品单体主视觉" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section class="story">
+      <div class="shell">
+        <div class="story-head">
+          <div data-reveal>
+            <div class="kicker">Context & Experience</div>
+            <h2 class="display">Designed to belong.</h2>
+          </div>
+          <p data-reveal>
+            从卧室、边柜到休闲区域，产品的存在感保持稳定：
+            不喧哗、不抢夺空间，却能用光线、材质与香气成为场景的一部分。
+          </p>
+        </div>
+
+        <div class="triptych">
+          <figure class="frame" data-reveal="clip"><img src="01.png" alt="夜间卧室使用场景" loading="lazy"></figure>
+          <figure class="frame" data-reveal="clip"><img src="02.png" alt="明亮边柜使用场景" loading="lazy"></figure>
+          <figure class="frame" data-reveal="clip"><img src="03.png" alt="休闲桌面使用场景" loading="lazy"></figure>
+        </div>
+        <div class="triptych-foot">
+          <span>Night / Warmth</span><span>Daylight / Balance</span><span>Living / Ritual</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRUCTURE -->
+    <section class="structure" id="structure">
+      <div class="shell">
+        <div class="structure-head">
+          <div data-reveal>
+            <div class="kicker">Structure & Detail</div>
+            <h2 class="display">Form follows<br>assembly.</h2>
+          </div>
+          <p data-reveal>
+            从上盖、香氛组件、镂空主体到底座，结构被拆分为清晰的功能层级。
+            爆炸视图帮助表达内部关系，多视角图则检验比例、轮廓与接地方式的一致性。
+          </p>
+        </div>
+
+        <div class="structure-grid">
+          <figure class="structure-card" data-reveal="clip">
+            <img src="06.png" alt="辽瓷香氛爆炸结构图" loading="lazy">
+          </figure>
+          <figure class="structure-card" data-reveal="clip">
+            <img src="07.png" alt="辽瓷香氛多视图" loading="lazy">
+          </figure>
+        </div>
+
+        <div class="structure-note" data-reveal>
+          <div><b>Top</b><span>木质上盖 / 出香孔</span></div>
+          <div><b>Core</b><span>香氛容器 / 中央结构</span></div>
+          <div><b>Shell</b><span>金属镂空网格</span></div>
+          <div><b>Base</b><span>稳定承托 / 完成比例闭合</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KIT / OBJECT -->
+    <section class="project-head">
+      <div class="shell">
+        <div class="project-title-row">
+          <div data-reveal>
+            <div class="kicker">Object System</div>
+            <h2 class="display">Product as<br>a ritual.</h2>
+          </div>
+          <p class="muted" data-reveal style="font-size:15px;line-height:1.9;margin:0;max-width:620px">
+            产品不是孤立的造型，而是由香氛介质、容器、摆放方式与使用动作共同构成的体验系统。
+            通过物料组合，让使用过程获得更完整的仪式感。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="full-bleed" data-reveal="clip">
+      <img src="05.png" alt="辽瓷香氛产品与配套物料" loading="lazy" style="height:auto;aspect-ratio:1.39/1;object-fit:cover">
+      <div class="image-caption"><span>05</span><span>Object / Material / Ritual</span></div>
+    </section>
+
+    <!-- PROCESS BOARD -->
+    <section class="board-section" id="process">
+      <div class="shell">
+        <div class="board-top">
+          <div data-reveal>
+            <div class="kicker">Design Development</div>
+            <h2 class="display">From reference<br>to language.</h2>
+          </div>
+          <p data-reveal>
+            设计板集中表达灵感来源、器型转译、结构拆解、顶视关系与光影效果。
+            传统元素没有被直接复制，而是被转化为比例、纹理、材质与氛围语言。
+          </p>
+        </div>
+
+        <figure class="board-img zoomable" data-reveal="clip">
+          <img src="08.png" alt="辽瓷香氛设计推演板" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <!-- FINAL CINEMATIC -->
+    <section class="cinematic">
+      <img src="10.png" alt="辽瓷香氛最终场景" loading="lazy">
+      <div class="cinematic-overlay"></div>
+      <div class="cinematic-copy" data-reveal>
+        <div class="kicker">Final Atmosphere</div>
+        <h2 class="display">Light. Scent.<br>Stillness.</h2>
+        <p>
+          当产品进入空间之后，设计最终被感知的不是某一个细节，
+          而是光、香气、材质与生活节奏共同形成的整体体验。
+        </p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="shell about-grid">
+        <div data-reveal>
+          <div class="kicker">About</div>
+          <h2 class="display">YYMJIN<br>Industrial<br>Design.</h2>
+        </div>
+        <div class="about-copy" data-reveal>
+          <p class="lead">
+            I design products with a balance of clarity, emotion and visual discipline.
+          </p>
+          <p>
+            我关注产品设计中的形态语言、CMF、结构表达与场景叙事，
+            希望每一个项目都能够从概念到最终呈现形成完整、可信且具有个人识别度的设计逻辑。
+          </p>
+          <div class="skills">
+            <div class="skill">Product Design</div>
+            <div class="skill">Industrial Design</div>
+            <div class="skill">CMF Strategy</div>
+            <div class="skill">3D Visualization</div>
+            <div class="skill">Design Storytelling</div>
+            <div class="skill">Portfolio Direction</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <div class="footer-big">
+        <div>
+          <div class="kicker">Selected Portfolio · 2026</div>
+          <h2 class="display">Thank you.</h2>
+        </div>
+        <a class="footer-cta" href="#top">Back<br>to top ↑</a>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 YYMJIN</span>
+        <span>Industrial Design · Product · CMF · Experience</span>
+        <span>yymjin.com</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <img id="lightboxImg" src="" alt="Design board enlarged">
+  </div>
+
+  <script>
+    const preloader = document.getElementById('preloader');
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        preloader.classList.add('out');
+        document.body.classList.remove('lock');
+      }, 520);
+    });
+
+    const reveal = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          reveal.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => reveal.observe(el));
+
+    const nav = document.getElementById('nav');
+    const progress = document.getElementById('progress');
+    let lastY = 0;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 30);
+      if (y > lastY && y > 280) nav.classList.add('hidden');
+      else nav.classList.remove('hidden');
+      lastY = y;
+
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
+
+      const hero = document.querySelector('.hero-media img');
+      if (hero && y < window.innerHeight * 1.2 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        hero.style.transform = `scale(1.045) translateY(${y * .06}px)`;
+      }
+    };
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const zoom = document.querySelector('.zoomable img');
+
+    function closeLB(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      document.body.classList.remove('lock');
+    }
+    if (zoom) zoom.addEventListener('click', () => {
+      lbImg.src = zoom.src;
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+      document.body.classList.add('lock');
+    });
+    lb.addEventListener('click', closeLB);
+    document.querySelector('.lightbox-close').addEventListener('click', closeLB);
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLB(); });
+  </script>
 </body>
 </html>
