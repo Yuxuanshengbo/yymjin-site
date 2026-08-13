@@ -320,8 +320,18 @@
       opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease)
     }
     [data-reveal].is-in{opacity:1;transform:none}
-    [data-reveal="clip"]{opacity:1;transform:none;clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease)}
-    [data-reveal="clip"].is-in{clip-path:inset(0 0 0 0)}
+    [data-reveal="clip"]{
+      opacity:1!important;
+      transform:none!important;
+      clip-path:none!important;
+    }
+    [data-reveal="clip"] img{
+      transform:scale(1.018);
+      transition:transform 1.25s var(--ease), filter .8s ease;
+    }
+    [data-reveal="clip"].is-in img{
+      transform:scale(1);
+    }
 
     /* LIGHTBOX */
     .lightbox{
@@ -456,7 +466,7 @@
 
     <!-- CINEMATIC OPEN -->
     <section class="full-bleed" data-reveal="clip">
-      <img src="10.png" alt="辽瓷香氛在书桌空间中的场景渲染" loading="lazy">
+      <img src="10.png" alt="辽瓷香氛在书桌空间中的场景渲染">
       <div class="image-caption">
         <span>01</span><span>Atmosphere / Context / Emotion</span>
       </div>
@@ -494,7 +504,7 @@
       <div class="shell editorial-grid">
         <div>
           <figure class="frame portrait" data-reveal="clip">
-            <img src="02.png" alt="辽瓷香氛日间陈设场景" loading="lazy">
+            <img src="02.png" alt="辽瓷香氛日间陈设场景">
           </figure>
           <div class="frame-label"><span>Scene / 01</span><span>Calm Daylight</span></div>
         </div>
@@ -510,7 +520,7 @@
           </div>
 
           <figure class="frame portrait" data-reveal="clip">
-            <img src="03.png" alt="辽瓷香氛休憩场景" loading="lazy">
+            <img src="03.png" alt="辽瓷香氛休憩场景">
           </figure>
           <div class="frame-label"><span>Scene / 02</span><span>Lifestyle Context</span></div>
         </div>
@@ -536,7 +546,7 @@
         </div>
 
         <figure class="form-image" data-reveal="clip">
-          <img src="04.png" alt="辽瓷香氛产品单体主视觉" loading="lazy">
+          <img src="04.png" alt="辽瓷香氛产品单体主视觉">
         </figure>
       </div>
     </section>
@@ -556,9 +566,9 @@
         </div>
 
         <div class="triptych">
-          <figure class="frame" data-reveal="clip"><img src="01.png" alt="夜间卧室使用场景" loading="lazy"></figure>
-          <figure class="frame" data-reveal="clip"><img src="02.png" alt="明亮边柜使用场景" loading="lazy"></figure>
-          <figure class="frame" data-reveal="clip"><img src="03.png" alt="休闲桌面使用场景" loading="lazy"></figure>
+          <figure class="frame" data-reveal="clip"><img src="01.png" alt="夜间卧室使用场景"></figure>
+          <figure class="frame" data-reveal="clip"><img src="02.png" alt="明亮边柜使用场景"></figure>
+          <figure class="frame" data-reveal="clip"><img src="03.png" alt="休闲桌面使用场景"></figure>
         </div>
         <div class="triptych-foot">
           <span>Night / Warmth</span><span>Daylight / Balance</span><span>Living / Ritual</span>
@@ -582,10 +592,10 @@
 
         <div class="structure-grid">
           <figure class="structure-card" data-reveal="clip">
-            <img src="06.png" alt="辽瓷香氛爆炸结构图" loading="lazy">
+            <img src="06.png" alt="辽瓷香氛爆炸结构图">
           </figure>
           <figure class="structure-card" data-reveal="clip">
-            <img src="07.png" alt="辽瓷香氛多视图" loading="lazy">
+            <img src="07.png" alt="辽瓷香氛多视图">
           </figure>
         </div>
 
@@ -615,7 +625,7 @@
     </section>
 
     <section class="full-bleed" data-reveal="clip">
-      <img src="05.png" alt="辽瓷香氛产品与配套物料" loading="lazy" style="height:auto;aspect-ratio:1.39/1;object-fit:cover">
+      <img src="05.png" alt="辽瓷香氛产品与配套物料" style="height:auto;aspect-ratio:1.39/1;object-fit:cover">
       <div class="image-caption"><span>05</span><span>Object / Material / Ritual</span></div>
     </section>
 
@@ -634,14 +644,14 @@
         </div>
 
         <figure class="board-img zoomable" data-reveal="clip">
-          <img src="08.png" alt="辽瓷香氛设计推演板" loading="lazy">
+          <img src="08.png" alt="辽瓷香氛设计推演板">
         </figure>
       </div>
     </section>
 
     <!-- FINAL CINEMATIC -->
     <section class="cinematic">
-      <img src="10.png" alt="辽瓷香氛最终场景" loading="lazy">
+      <img src="10.png" alt="辽瓷香氛最终场景">
       <div class="cinematic-overlay"></div>
       <div class="cinematic-copy" data-reveal>
         <div class="kicker">Final Atmosphere</div>
